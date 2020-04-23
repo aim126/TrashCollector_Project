@@ -23,24 +23,27 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
-
+        public SelectList Roles { get; set; }
         public string ReturnUrl { get; set; }
-
+                
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class InputModel
@@ -49,12 +52,12 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
-
+            public string Role { get; set;  }
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
-            public string Password { get; set; }
+           
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
@@ -69,6 +72,7 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var roles = _roleManager
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -110,23 +114,12 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
                 }
             }        }
 
-                private readonly IEmailSender _emailSender;
-                private readonly RoleManager<IdentityRole> _roleManager;
+                
+                
        
 
-        public RegisterModel(
-                    UserManager<IdentityUser> userManager,
-                    SignInManager<IdentityUser> signInManager,
-                    ILogger<RegisterModel> logger,
-                    IEmailSender emailSender,
-                    RoleManager<IdentityRole> roleManager)
-        {
-           _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
-            _emailSender = emailSender;
-            _roleManager = roleManager;
-        }
+       
+        
                             
             
                     
@@ -139,7 +132,7 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
                     
             
             // If we got this far, something failed, redisplay form
-            return Page();
+               return Page();
         
 
     }
