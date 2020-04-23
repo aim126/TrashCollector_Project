@@ -40,9 +40,11 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
         }
 
         [BindProperty]
+        public string ReturnUrl { get; set; }
+        [BindProperty]
         public InputModel Input { get; set; }
         public SelectList Roles { get; set; }
-        public string ReturnUrl { get; set; }
+        
                 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
@@ -52,7 +54,10 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
-            public string Role { get; set;  }
+
+            [Required]
+            public string Role { get; set; }
+        }
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -66,25 +71,33 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
 
             [Required]
             public string Role { get; set; }
-        }
+
+            
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            var roles = _roleManager
+            ExternalLogins = (await
+                _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var roles = _roleManager.Roles;
+            Roles = new SelectList(roles, "Name", "Name");
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            returnUrl = returnUrl;
+            ExternalLogins = (await
+                _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    if(await _roleManager.RoleExistsAsync(Input.Role))
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Role);
+                    }
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
