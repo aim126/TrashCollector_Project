@@ -60,6 +60,9 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            public string Role { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -104,11 +107,37 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
 
+               }
+
+                private readonly IEmailSender _emailSender;
+                private readonly RoleManager<IdentityRole> roleManager)
+
+                public RegisterModel(
+                    UserManager<IdentityUser> userManager,
+                    SignInManager<IdentityUser> signInManager,
+                    ILogger<RegisterModel> logger,
+                    IEmailSender emailSender,
+                    RoleManager<IdentityRole> roleManager)
+        { }
+                            
+            
+                    
+
+               
+           
+                
+                
+                   
+                    
+            }
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
     }
 }
+                
+
+                
+         
