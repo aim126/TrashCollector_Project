@@ -12,6 +12,9 @@ using TrashCollectorProject.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Security.Claims;
+//using TrashCollectorProject.ActionFilters;
+using Microsoft.AspNetCore.Http;
 
 namespace TrashCollectorProject
 {
@@ -30,12 +33,12 @@ namespace TrashCollectorProject
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
-            options.SignIn.RequireConfirmedAccount = false)
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+           
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
+
 
             services.AddControllersWithViews();
             services.AddRazorPages();

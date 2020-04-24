@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
@@ -39,11 +40,11 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
             _roleManager = roleManager;
         }
 
-        [BindProperty]
-        public string ReturnUrl { get; set; }
+        
         [BindProperty]
         public InputModel Input { get; set; }
         public SelectList Roles { get; set; }
+        public string ReturnUrl { get; set; }
         
                 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
@@ -55,14 +56,14 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            public string Role { get; set; }
-        }
+
+
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
-           
+            public string Password { get; set; }
+
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
@@ -71,6 +72,7 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
 
             [Required]
             public string Role { get; set; }
+        }
 
             
 
@@ -85,7 +87,7 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl;
+            returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await
                 _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -94,7 +96,7 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    if(await _roleManager.RoleExistsAsync(Input.Role))
+                    if (await _roleManager.RoleExistsAsync(Input.Role))
                     {
                         await _userManager.AddToRoleAsync(user, Input.Role);
                     }
@@ -125,28 +127,21 @@ namespace TrashCollectorProject.Areas.Identity.Pages.Account
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-            }        }
+            }
 
-                
-                
-       
 
-       
-        
-                            
-            
-                    
 
-               
-           
-                
-                
-             
-                    
-            
+
+
+
+
+
+
+
+
             // If we got this far, something failed, redisplay form
-               return Page();
-        
+            return Page();
+        }
 
     }
 }
