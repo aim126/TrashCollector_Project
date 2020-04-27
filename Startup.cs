@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
-//using TrashCollectorProject.ActionFilters;
+using TrashCollectorProject.ActionFilters;
 using Microsoft.AspNetCore.Http;
 
 namespace TrashCollectorProject
@@ -43,14 +43,15 @@ namespace TrashCollectorProject
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddScoped<ClaimsPrincipal>(s =>
-                  s.GetService < IHttpContextAccessor>().HttpContext.User);
+                  s.GetService<IHttpContextAccessor>().HttpContext.User);
             services.AddControllers(config =>
             {
                 config.Filters.Add(typeof(GlobalRouting));
 
             });
-
+        }
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
             public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             {
                 if (env.IsDevelopment())
@@ -80,10 +81,8 @@ namespace TrashCollectorProject
                     endpoints.MapRazorPages();
                 });
             }
-        }
-
-        private class GlobalRouting
-        {
-        }
     }
+
+      
+    
 }

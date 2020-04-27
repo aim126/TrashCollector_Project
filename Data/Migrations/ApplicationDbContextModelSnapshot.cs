@@ -48,8 +48,8 @@ namespace TrashCollectorProject.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "65faf251-438d-49c7-a422-64000f1deba0",
-                            ConcurrencyStamp = "0cf039be-0c50-411b-92a5-00f08dda3595",
+                            Id = "fae17514-571f-4a99-9bf5-0b37bd37f5c9",
+                            ConcurrencyStamp = "564d47d9-c9c2-4cec-969e-770f130cb5c9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
