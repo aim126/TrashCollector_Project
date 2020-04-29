@@ -28,5 +28,6 @@ namespace TrashCollectorProject.Controllers
         {
             return View();
         }
-    }
+        
+        }
 }
