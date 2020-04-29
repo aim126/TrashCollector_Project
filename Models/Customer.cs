@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using TrashCollectorProject.Views;
 
 namespace TrashCollectorProject.Models
 {
@@ -31,8 +25,11 @@ namespace TrashCollectorProject.Models
         public string  EmailAddress { get; set; }
         [Display(Name = "Day For Pickup")]
         public string DayForPickUp { get; set; }
+        [Display(Name =  " Start Suspension Date")]
         public DateTime StartSuspensionDate { get; set; }
+        [Display(Name = "End Suspension Date")]
         public DateTime EndSuspensionDate { get; set; }
+        [Display(Name =  "Extra Pickup Date")]
         public DateTime ExtraPickUp  { get; set; }
        
         [ForeignKey("IndentityUser")]

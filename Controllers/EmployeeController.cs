@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TrashCollectorProject.Controllers
 {
-    public class EmployeeController1 : Controller
+    public class EmployeeController : Controller
     {
         // GET: /<controller>/
         public IActionResult Index()
